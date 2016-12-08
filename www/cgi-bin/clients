@@ -1,0 +1,33 @@
+#!/usr/bin/lua
+
+require "luci.cacheloader"
+require "luci.sgi.cgi"
+
+local util = require("luci.util")
+local sys = require("luci.sys")
+
+function escape_html(s)
+  return (s:gsub('&', '&amp;'):gsub('<', '&lt;'):gsub('>', '&gt;'):gsub('"', '&quot;'))
+end
+
+io.write("Content-type: text/html\n\n")
+io.write("<!DOCTYPE html>\n")
+io.write("<html>")
+io.write("<head>")
+
+io.write("</head>")
+io.write("<body>")
+
+io.write("<h2>Clients connected dev wlan0</h2> ")
+io.write("<pre>")
+io.write(escape_html(sys.exec("iw dev wlan0 station dump  | grep Station")))
+io.write("</pre>")
+
+io.write("<h2>Clients connected dev wlan0-1</h2> ")
+io.write("<pre>")
+io.write(escape_html(sys.exec("iw dev wlan0-1 station dump")))
+io.write("</pre>")
+
+io.write("</body>")
+io.write("</html>")
+
